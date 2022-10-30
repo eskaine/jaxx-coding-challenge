@@ -1,7 +1,6 @@
 import React from "react";
 import Container from "@mui/material/Container";
-import Navbar from './features/Header/Navbar';
-import "./App.css";
+import Navbar from '../components/Navbar';
 
 function App({children}) {
   return (
