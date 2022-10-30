@@ -1,11 +1,11 @@
 require('dotenv').config();
 const express = require('express');
-const app = express();
-
+const connectMongo = require('./configs/mongo.config');
 const adminRouter = require('./routes/admin');
 const port = process.env.PORT;
 
-require('./configs/mongo.config');
+const app = express();
+connectMongo();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
