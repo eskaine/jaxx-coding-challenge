@@ -12,7 +12,6 @@ app.use(express.urlencoded({ extended: false }));
 
 app.use('/admin', adminRouter);
 
-// catch 404 and forward to error handler
 app.use((req, res, next) => {
   res.sendStatus(404);
 });
