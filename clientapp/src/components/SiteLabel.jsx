@@ -1,21 +1,29 @@
 import Typography from "@mui/material/Typography";
 
-function SiteLabel({size, href, sx}) {
+const labelStyle = {
+  mr: 2,
+  fontFamily: "ubuntu",
+  fontWeight: 700,
+  letterSpacing: ".3rem",
+  color: "inherit",
+  textDecoration: "none",
+};
+
+function SiteLabel({ size, href, sx }) {
+  const setLabelStyle = (params) => {
+    return {
+      ...labelStyle,
+      ...params,
+    };
+  };
+
   return (
     <Typography
       variant={size}
       noWrap
       component="a"
       href={href}
-      sx={{
-        mr: 2,
-        fontFamily: "ubuntu",
-        fontWeight: 700,
-        letterSpacing: ".3rem",
-        color: "inherit",
-        textDecoration: "none",
-        ...sx,
-      }}
+      sx={setLabelStyle(sx)}
     >
       Mighty Jaxx
     </Typography>
