@@ -2,7 +2,8 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 
 const initialState = {
-  isLogin: false,
+  isAuthenticated: false,
+  token: null
 };
 
 export const adminLoginAsync = createAsyncThunk(
@@ -18,17 +19,26 @@ export const adminLoginAsync = createAsyncThunk(
 export const adminSlice = createSlice({
   name: 'admin',
   initialState,
+  reducers: {
+    logout: (state) => {
+      state.isAuthenticated = false;
+      state.token = null;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(adminLoginAsync.rejected)
       .addCase(adminLoginAsync.fulfilled, (state, action) => {
         if(action.payload.status === 200) {
-          state.isLogin = true;
+          state.isAuthenticated = true;
+          state.token = action.payload.token;
         }
       });
   },
 });
 
-export const selectIsLogin = (state) => state.admin.isLogin;
+export const { logout } = adminSlice.actions;
+
+export const selectIsAuthenticated = (state) => state.admin.isAuthenticated;
 
 export default adminSlice.reducer;

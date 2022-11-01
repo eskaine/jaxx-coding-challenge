@@ -17,7 +17,7 @@ const loginFormStyle = {
   gap: 2,
 };
 
-export default function Login() {
+function Login() {
   const dispatch = useDispatch();
 
   const [showLoginError, setShowLoginError] = useState(false);
@@ -37,7 +37,7 @@ export default function Login() {
 
   const onSubmit = async () => {
     const validEmail = validator.isEmail(formState.email);
-    const validPassword = validator.isAlphanumeric(formState.password);
+    const validPassword = validator.isStrongPassword(formState.password);
 
     if(validEmail && validPassword) {
       const res = await dispatch(adminLoginAsync(formState));
@@ -80,3 +80,5 @@ export default function Login() {
     </div>
   );
 }
+
+export default Login;

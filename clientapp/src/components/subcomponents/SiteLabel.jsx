@@ -25,7 +25,7 @@ function SiteLabel({ size, href, sx }) {
       href={href}
       sx={setLabelStyle(sx)}
     >
-      Mighty Jaxx
+      Mighty Jaxx Admin
     </Typography>
   );
 }

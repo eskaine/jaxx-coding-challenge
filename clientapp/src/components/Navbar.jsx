@@ -14,7 +14,7 @@ import MenuItem from "@mui/material/MenuItem";
 
 import SiteLabel from "./subcomponents/SiteLabel";
 
-const pages = ["Products", "Pricing", "Blog"];
+const pages = ["Dashboard"];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
 function Navbar() {
