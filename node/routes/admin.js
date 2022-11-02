@@ -12,8 +12,6 @@ router.post("/login", async (req, res, next) => {
 
     let isPasswordCorrect;
 
-    // add jwt
-
     if (existingAdmin) {
       isPasswordCorrect = await bcrypt.compare(
         password,
@@ -34,8 +32,8 @@ router.post("/login", async (req, res, next) => {
     }
 
     return res.status(401).send("Invalid Username or Password!");
-  } catch (error) {
-    res.sendStatus(500);
+  } catch (err) {
+    next(err);
   }
 });
 
