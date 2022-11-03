@@ -1,7 +1,8 @@
 import { createBrowserRouter, Navigate } from 'react-router-dom';
-import Dashboard from '../pages/Dashboard';
-import Login from '../pages/Login';
 import AuthGuard from '../utils/authGuard';
+import Login from '../pages/Login';
+import Dashboard from '../pages/Dashboard';
+import AddProduct from '../pages/AddProduct';
 
 export const router = createBrowserRouter([
     {
@@ -18,6 +19,10 @@ export const router = createBrowserRouter([
             {
                 path: 'dashboard',
                 element: <AuthGuard><Dashboard /></AuthGuard>,
+            },
+            {
+                path: 'add-product',
+                element: <AuthGuard><AddProduct /></AuthGuard>,
             },
             {
                 path: '*',

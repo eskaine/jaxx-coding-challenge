@@ -4,6 +4,10 @@ import Navbar from '../components/Navbar';
 import { RouterProvider } from "react-router-dom";
 import { router } from "../configs/router";
 
+const mainContainerStyle = {
+  paddingTop: 5,
+};
+
 function App() {
   return (
     <div>
@@ -11,7 +15,7 @@ function App() {
         <Navbar />
       </header>
       <main>
-        <Container fixed>
+        <Container fixed sx={mainContainerStyle}>
           <RouterProvider router={router} />
         </Container>
       </main>
