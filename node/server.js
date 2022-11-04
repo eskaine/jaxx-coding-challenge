@@ -2,7 +2,8 @@ require('dotenv').config();
 const express = require('express');
 const connectMongo = require('./configs/mongo.config');
 const adminRouter = require('./routes/admin');
-const productRouter = require('./routes/products');
+const productsRouter = require('./routes/products');
+const fileRouter = require('./routes/file');
 const cors = require('./middleware/cors');
 const errorHandler = require('./middleware/error');
 
@@ -15,7 +16,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors);
 app.use('/admin', adminRouter);
-app.use('/products', productRouter);
+app.use('/products', productsRouter);
+app.use('/file', fileRouter);
 app.use(errorHandler);
 
 app.listen(
