@@ -1,11 +1,11 @@
 import { Navigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { selectIsAuthenticated } from '../reducers/admin/adminSlice';
+import { isAuthenticated } from '../reducers/adminSlice';
 
 function AuthGuard({ children }) {
-  const isAuthenticated = useSelector(selectIsAuthenticated);
+  const isAuth = useSelector(isAuthenticated);
 
-  if(!isAuthenticated) {
+  if(!isAuth) {
     return <Navigate to="/login" />;
   }
 

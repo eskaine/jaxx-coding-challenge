@@ -1,9 +1,11 @@
-import { useState, useContext } from "react";
-import { useDispatch } from "react-redux";
+import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Navigate } from "react-router-dom";
 import { Alert, Box, Button, TextField, Typography } from "@mui/material";
 import { withOnChangeHandler } from "../../components/hoc/withOnChangeHandler";
-import { ServiceContext } from "../../utils/serviceProvider";
-import { formSectionStyle, loginFormStyle, } from "./styles";
+import { adminLoginAsync } from "../../reducers/adminSlice";
+import { isAuthenticated } from "../../reducers/adminSlice";
+import { formSectionStyle, loginFormStyle } from "./styles";
 
 export const formState = {
   email: "",
@@ -12,19 +14,21 @@ export const formState = {
 
 function Login(props) {
   const dispatch = useDispatch();
-  const services = useContext(ServiceContext);
+  const isAuth = useSelector(isAuthenticated);
 
   const [showLoginError, setShowLoginError] = useState(false);
 
   const onSubmit = async () => {
-    const isSuccessful = await services.accountService.login(props.formState, dispatch);
+    const res = await dispatch(adminLoginAsync(props.formState));
 
-    if(!isSuccessful) {
+    if (res.meta.requestStatus !== "fulfilled") {
       setShowLoginError(true);
     }
   };
 
-  return (
+  return isAuth ? (
+    <Navigate to="/dashboard" />
+  ) : (
     <div>
       <Box sx={formSectionStyle}>
         <Box sx={loginFormStyle}>
@@ -42,6 +46,7 @@ function Login(props) {
             variant="outlined"
             onChange={(e) => props.onChangeHandler(e)}
             inputProps={{ "data-type": "password" }}
+            type="password"
           />
           <Button variant="contained" onClick={onSubmit}>
             Submit

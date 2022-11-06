@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState } from "react";
 
 export const withOnChangeHandler = (Component, state) => {
   return function (props) {
@@ -13,13 +13,13 @@ export const withOnChangeHandler = (Component, state) => {
       });
     };
 
-    const memoizedState = useMemo(() => ({
+    const updatedProps = {
       ...props,
       formState,
       setFormState,
       onChangeHandler,
-    }));
+    };
 
-    return <Component {...memoizedState} />;
+    return <Component {...updatedProps} />;
   };
 };

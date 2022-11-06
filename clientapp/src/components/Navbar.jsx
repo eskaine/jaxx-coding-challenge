@@ -11,8 +11,9 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
-
 import SiteLabel from "./subcomponents/SiteLabel";
+import { useSelector } from "react-redux";
+import { isAuthenticated } from '../reducers/adminSlice';
 
 const pages = ["Dashboard"];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
@@ -20,6 +21,7 @@ const settings = ["Profile", "Account", "Dashboard", "Logout"];
 function Navbar() {
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
+  const isAuth = useSelector(isAuthenticated);
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -35,7 +37,7 @@ function Navbar() {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
-
+  
   return (
     <AppBar position="static">
       <Container maxWidth="xl">
@@ -76,7 +78,7 @@ function Navbar() {
                 display: { xs: "block", md: "none" },
               }}
             >
-              {pages.map((page) => (
+              {isAuth && pages.map((page) => (
                 <MenuItem key={page} onClick={handleCloseNavMenu}>
                   <Typography textAlign="center">{page}</Typography>
                 </MenuItem>
@@ -92,7 +94,7 @@ function Navbar() {
           {/* Mobile Navbar end */}
           
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-            {pages.map((page) => (
+            {isAuth && pages.map((page) => (
               <Button
                 key={page}
                 onClick={handleCloseNavMenu}
