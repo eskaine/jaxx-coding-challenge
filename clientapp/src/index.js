@@ -2,6 +2,7 @@ import React from "react";
 import { createRoot } from "react-dom/client";
 import { Provider } from "react-redux";
 import { FirebaseProvider } from "./utils/firebaseProvider";
+import { ServiceProvider } from "./utils/serviceProvider";
 import { store } from "./configs/store";
 import App from "./layouts/App";
 import "./index.css";
@@ -12,9 +13,11 @@ const root = createRoot(container);
 root.render(
   <React.StrictMode>
     <Provider store={store}>
-      <FirebaseProvider>
-        <App />
-      </FirebaseProvider>
+      <ServiceProvider>
+        <FirebaseProvider>
+          <App />
+        </FirebaseProvider>
+      </ServiceProvider>
     </Provider>
   </React.StrictMode>
 );

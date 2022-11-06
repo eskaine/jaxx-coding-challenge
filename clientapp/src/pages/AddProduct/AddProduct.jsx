@@ -1,39 +1,10 @@
 import { useState, useContext } from "react";
 import { Box, Button, Typography } from "@mui/material";
 import { Image } from "mui-image";
-import InputField from "../components/InputField";
-import { FirebaseContext } from "../utils/firebaseProvider";
-import { withOnChangeHandler } from "../components/hoc/withOnChangeHandler";
-
-const formSectionStyle = {
-  mt: 10,
-  display: "flex",
-  justifyContent: "center",
-};
-
-const loginFormStyle = {
-  display: "flex",
-  flexDirection: "column",
-  width: 450,
-  gap: 2,
-};
-
-const imageFormStyle = {
-  display: "flex",
-  justifyContent: "space-between",
-  alignItems: "center",
-};
-
-const placeholderImage = {
-  width: "auto",
-  height: "20vh",
-  backgroundColor: "lightgray",
-  color: "white",
-  fontSize: 20,
-  display: "flex",
-  justifyContent: "center",
-  alignItems: "center",
-};
+import InputField from "../../components/InputField";
+import { FirebaseContext } from "../../utils/firebaseProvider";
+import { withOnChangeHandler } from "../../components/hoc/withOnChangeHandler";
+import { formSectionStyle, loginFormStyle, imageFormStyle, placeholderImage } from './styles';
 
 const formState = {
   sku: "",

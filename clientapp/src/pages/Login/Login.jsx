@@ -1,23 +1,11 @@
 import { useState, useContext } from "react";
 import { useDispatch } from "react-redux";
 import { Alert, Box, Button, TextField, Typography } from "@mui/material";
-import { withOnChangeHandler } from "../components/hoc/withOnChangeHandler";
-import { ServiceContext } from "../utils/serviceProvider";
+import { withOnChangeHandler } from "../../components/hoc/withOnChangeHandler";
+import { ServiceContext } from "../../utils/serviceProvider";
+import { formSectionStyle, loginFormStyle, } from "./styles";
 
-const formSectionStyle = {
-  mt: 10,
-  display: "flex",
-  justifyContent: "center",
-};
-
-const loginFormStyle = {
-  display: "flex",
-  flexDirection: "column",
-  width: 400,
-  gap: 2,
-};
-
-const formState = {
+export const formState = {
   email: "",
   password: "",
 };
