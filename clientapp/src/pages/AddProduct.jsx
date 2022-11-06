@@ -3,6 +3,7 @@ import { Box, Button, Typography } from "@mui/material";
 import { Image } from "mui-image";
 import InputField from "../components/InputField";
 import { FirebaseContext } from "../utils/firebaseProvider";
+import { withOnChangeHandler } from "../components/hoc/withOnChangeHandler";
 
 const formSectionStyle = {
   mt: 10,
@@ -25,7 +26,7 @@ const imageFormStyle = {
 
 const placeholderImage = {
   width: "auto",
-  height: '20vh',
+  height: "20vh",
   backgroundColor: "lightgray",
   color: "white",
   fontSize: 20,
@@ -34,13 +35,18 @@ const placeholderImage = {
   alignItems: "center",
 };
 
-function AddProduct() {
-  const { uploadImage} = useContext(FirebaseContext);
+const formState = {
+  sku: "",
+  title: "",
+};
+
+function AddProduct(props) {
+  const { uploadImage } = useContext(FirebaseContext);
   const [image, setImage] = useState(null);
 
   const submitImage = async (e) => {
     const imageUrl = await uploadImage(e.target.files[0]);
-    if(imageUrl) {
+    if (imageUrl) {
       setImage(imageUrl);
     }
   };
@@ -50,20 +56,26 @@ function AddProduct() {
       <Typography variant="h4">Add Product</Typography>
       <Box sx={formSectionStyle}>
         <Box sx={loginFormStyle}>
-          <InputField fieldName="SKU" />
-          <InputField fieldName="Title" />
+          <InputField
+            fieldName="SKU"
+            dataType="sku"
+            value={props.formState.sku}
+            onChangeHandler={props.onChangeHandler}
+          />
+          <InputField
+            fieldName="Title"
+            dataType="title"
+            value={props.formState.title}
+            onChangeHandler={props.onChangeHandler}
+          />
           <Box sx={imageFormStyle}>
             <Typography variant="h5">Upload Image :</Typography>
-            <Button variant="contained"><input type="file" onChange={(e) => submitImage(e)} /></Button>
+            <Button variant="contained">
+              <input type="file" onChange={(e) => submitImage(e)} />
+            </Button>
           </Box>
           {!image && <Box sx={placeholderImage}>Image</Box>}
-          {image && (
-            <Image
-              fit="scale-down"
-              height="20vh"
-              src={image}
-            />
-          )}
+          {image && <Image fit="scale-down" height="20vh" src={image} />}
           <Button variant="contained">Submit</Button>
         </Box>
       </Box>
@@ -71,4 +83,4 @@ function AddProduct() {
   );
 }
 
-export default AddProduct;
+export default withOnChangeHandler(AddProduct, formState);

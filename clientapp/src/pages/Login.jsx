@@ -1,8 +1,8 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { useDispatch } from "react-redux";
-import validator from "validator";
 import { Alert, Box, Button, TextField, Typography } from "@mui/material";
-import { adminLoginAsync } from "../reducers/admin/adminSlice";
+import { withOnChangeHandler } from "../components/hoc/withOnChangeHandler";
+import { ServiceContext } from "../utils/serviceProvider";
 
 const formSectionStyle = {
   mt: 10,
@@ -17,37 +17,23 @@ const loginFormStyle = {
   gap: 2,
 };
 
-function Login() {
+const formState = {
+  email: "",
+  password: "",
+};
+
+function Login(props) {
   const dispatch = useDispatch();
+  const services = useContext(ServiceContext);
 
   const [showLoginError, setShowLoginError] = useState(false);
-  const [formState, setFormState] = useState({
-    email: "",
-    password: "",
-  });
-
-  const onChange = ({ target }) => {
-    const field = target.getAttribute("data-type");
-
-    setFormState({
-      ...formState,
-      [field]: target.value,
-    });
-  };
 
   const onSubmit = async () => {
-    const validEmail = validator.isEmail(formState.email);
-    const validPassword = validator.isStrongPassword(formState.password);
+    const isSuccessful = await services.accountService.login(props.formState, dispatch);
 
-    if(validEmail && validPassword) {
-      const res = await dispatch(adminLoginAsync(formState));
-
-      if(res.meta.requestStatus === "fulfilled") {
-          return;
-      }
+    if(!isSuccessful) {
+      setShowLoginError(true);
     }
-
-    setShowLoginError(true);
   };
 
   return (
@@ -59,14 +45,14 @@ function Login() {
             id="outlined-basic"
             label="Email"
             variant="outlined"
-            onChange={(e) => onChange(e)}
+            onChange={(e) => props.onChangeHandler(e)}
             inputProps={{ "data-type": "email" }}
           />
           <TextField
             id="outlined-basic"
             label="Password"
             variant="outlined"
-            onChange={(e) => onChange(e)}
+            onChange={(e) => props.onChangeHandler(e)}
             inputProps={{ "data-type": "password" }}
           />
           <Button variant="contained" onClick={onSubmit}>
@@ -81,4 +67,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default withOnChangeHandler(Login, formState);
