@@ -1,5 +1,6 @@
 import { useState, useContext } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { Box, Button, Typography } from "@mui/material";
 import { Image } from "mui-image";
 import InputField from "../../components/InputField";
@@ -19,6 +20,7 @@ function AddProduct(props) {
   const authToken = useSelector(token);
   const { uploadImage } = useContext(FirebaseContext);
   const [imageUrl, setImageUrl] = useState(null);
+  const navigate = useNavigate();
 
   const submitImage = async (e) => {
     const url = await uploadImage(e.target.files[0]);
@@ -40,7 +42,11 @@ function AddProduct(props) {
     };
 
     const res = await dispatch(addProductAsync({data, headers}));
-    // redirect
+    if(res.payload.status === 200) {
+      navigate("/dashboard");
+    } else {
+      //show submit error
+    }
   };
 
   return (

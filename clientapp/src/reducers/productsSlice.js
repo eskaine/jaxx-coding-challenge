@@ -3,33 +3,75 @@ import axios from "axios";
 import { baseUrl, urlConstants } from "../constants/url.constants";
 
 const initialState = {
-  productsList: [],
+  products: [],
 };
+
+export const getAllProductAsync = createAsyncThunk(
+  "products",
+  async (headers) => {
+    const url = baseUrl + urlConstants.products.all;
+    const { data, status } = await axios.get(url, headers);
+
+    return {
+      data,
+      status,
+    };
+  }
+);
 
 export const addProductAsync = createAsyncThunk(
   "products/add",
   async (params) => {
     const url = baseUrl + urlConstants.products.add;
-    const response = await axios.post(url, params.data, params.headers);
+    const { data, status } = await axios.post(url, params.data, params.headers);
 
-    return response;
+    return {
+      data,
+      status,
+    };
+  }
+);
+
+export const deleteProductAsync = createAsyncThunk(
+  "products/delete",
+  async (params) => {
+    const url = baseUrl + urlConstants.products.delete + `/${params.id}`;
+    const { status } = await axios.delete(url, params.headers);
+
+    return { status };
   }
 );
 
 export const productsSlice = createSlice({
   name: "products",
   initialState,
+  reducers: {
+    setAllProducts: (state, payload) => {
+      state.products = payload;
+    },
+  },
   extraReducers: (builder) => {
     builder
-      .addCase(addProductAsync.rejected)
-      .addCase(addProductAsync.fulfilled, (state, action) => {
+      .addCase(getAllProductAsync.rejected)
+      .addCase(getAllProductAsync.fulfilled, (state, action) => {
         if (action.payload.status === 200) {
-          state.productsList = action.payload.result;
+          productsSlice.caseReducers.setAllProducts(
+            state,
+            action.payload.data.products
+          );
         }
       });
+
+    builder
+      .addCase(addProductAsync.rejected)
+      .addCase(addProductAsync.fulfilled);
+
+    builder
+      .addCase(deleteProductAsync.rejected)
+      .addCase(deleteProductAsync.fulfilled);
   },
 });
 
-export const products = (state) => state.products.productsList;
+export const products = (state) => state.products.products;
 
 export default productsSlice.reducer;

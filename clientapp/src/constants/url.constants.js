@@ -4,6 +4,8 @@ export const urlConstants = {
         login: '/admin/login'
     },
     products: {
-        add: '/products/add'
+        all: '/products',
+        add: '/products/add',
+        delete: '/products/delete'
     }
 };
