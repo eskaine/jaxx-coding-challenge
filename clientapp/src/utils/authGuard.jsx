@@ -4,7 +4,7 @@ import { isAuthenticated } from '../reducers/adminSlice';
 
 function AuthGuard({ children }) {
   const isAuth = useSelector(isAuthenticated);
-
+  
   if(!isAuth) {
     return <Navigate to="/login" />;
   }

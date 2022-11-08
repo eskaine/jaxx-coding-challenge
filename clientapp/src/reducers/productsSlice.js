@@ -3,7 +3,7 @@ import axios from "axios";
 import { baseUrl, urlConstants } from "../constants/url.constants";
 
 const initialState = {
-  products: [],
+  productsList: [],
 };
 
 export const getAllProductAsync = createAsyncThunk(
@@ -46,21 +46,14 @@ export const productsSlice = createSlice({
   name: "products",
   initialState,
   reducers: {
-    setAllProducts: (state, payload) => {
-      state.products = payload;
+    setAllProducts: (state, action) => {
+      state.productsList = action.payload.data.products;
     },
   },
   extraReducers: (builder) => {
     builder
       .addCase(getAllProductAsync.rejected)
-      .addCase(getAllProductAsync.fulfilled, (state, action) => {
-        if (action.payload.status === 200) {
-          productsSlice.caseReducers.setAllProducts(
-            state,
-            action.payload.data.products
-          );
-        }
-      });
+      .addCase(getAllProductAsync.fulfilled, productsSlice.caseReducers.setAllProducts);
 
     builder
       .addCase(addProductAsync.rejected)
@@ -72,6 +65,6 @@ export const productsSlice = createSlice({
   },
 });
 
-export const products = (state) => state.products.products;
+export const products = (state) => state.products.productsList;
 
 export default productsSlice.reducer;

@@ -1,7 +1,7 @@
 import { useState, useContext } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { Box, Button, Typography } from "@mui/material";
+import { Alert, Box, Button, Typography } from "@mui/material";
 import { Image } from "mui-image";
 import InputField from "../../components/InputField";
 import { withOnChangeHandler } from "../../components/hoc/withOnChangeHandler";
@@ -16,11 +16,13 @@ const formState = {
 };
 
 function AddProduct(props) {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const authToken = useSelector(token);
   const { uploadImage } = useContext(FirebaseContext);
+  const {sku, title} = props.formState;
   const [imageUrl, setImageUrl] = useState(null);
-  const navigate = useNavigate();
+  const [showError, setShowError] = useState(false);
 
   const submitImage = async (e) => {
     const url = await uploadImage(e.target.files[0]);
@@ -42,10 +44,11 @@ function AddProduct(props) {
     };
 
     const res = await dispatch(addProductAsync({data, headers}));
-    if(res.payload.status === 200) {
-      navigate("/dashboard");
+
+    if(res.error) {
+      setShowError(true);
     } else {
-      //show submit error
+      navigate("/dashboard");
     }
   };
 
@@ -57,13 +60,13 @@ function AddProduct(props) {
           <InputField
             fieldName="SKU"
             dataType="sku"
-            value={props.formState.sku}
+            value={sku}
             onChangeHandler={props.onChangeHandler}
           />
           <InputField
             fieldName="Title"
             dataType="title"
-            value={props.formState.title}
+            value={title}
             onChangeHandler={props.onChangeHandler}
           />
           <Box sx={imageFormStyle}>
@@ -74,7 +77,10 @@ function AddProduct(props) {
           </Box>
           {!imageUrl && <Box sx={placeholderImage}>Image</Box>}
           {imageUrl && <Image fit="scale-down" height="20vh" src={imageUrl} />}
-          <Button variant="contained" onClick={onSubmit}>Submit</Button>
+          <Button variant="contained" disabled={sku === "" || title === "" || !imageUrl} onClick={onSubmit}>Submit</Button>
+          {showError && (
+            <Alert severity="error">Invalid product information!</Alert>
+          )}
         </Box>
       </Box>
     </div>

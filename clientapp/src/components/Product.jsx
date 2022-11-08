@@ -1,5 +1,4 @@
 import { useDispatch, useSelector } from "react-redux";
-import { redirect } from 'react-router-dom';
 import { Card, CardActions, CardContent, CardMedia } from "@mui/material";
 import { IconButton, Typography } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
@@ -20,14 +19,13 @@ function Product({ value }) {
     };
 
     const res = await dispatch(deleteProductAsync(params));
-
     if(res.payload.status === 200) {
-      redirect("/dashboard");
+      window.location.reload(false);
     }
   }
 
   return (
-    <Card sx={{ maxWidth: 300 }}>
+    <Card sx={{ width: 250 }}>
       <CardMedia component="img" height="140" image={imageUrl} />
       <CardContent>
         <Typography gutterBottom variant="h5" component="div">

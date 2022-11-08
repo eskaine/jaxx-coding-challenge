@@ -24,27 +24,32 @@ export const adminSlice = createSlice({
   name: "admin",
   initialState,
   reducers: {
-    logout: (state) => {
+    logout: (state, action) => {
       state.isAuthenticated = false;
       state.token = null;
+      localStorage.setItem("token", null);
     },
-    login:(state, payload) => {
-      state.isAuthenticated = true;
-      state.token = payload;
+    login:(state, action) => {
+      const token = localStorage.getItem('token');
+
+      if(token !== 'null') {
+        state.token = token;
+        state.isAuthenticated = true;
+      } else if(action.payload) {
+        state.token = action.payload.data;
+        state.isAuthenticated = true;
+        localStorage.setItem("token", action.payload.data);
+      }
     }
   },
   extraReducers: (builder) => {
     builder
       .addCase(adminLoginAsync.rejected)
-      .addCase(adminLoginAsync.fulfilled, (state, action) => {
-        if (action.payload.status === 200) {
-          adminSlice.caseReducers.login(state, action.payload.data);
-        }
-      });
+      .addCase(adminLoginAsync.fulfilled, adminSlice.caseReducers.login);
   },
 });
 
-export const { logout } = adminSlice.actions;
+export const { login, logout } = adminSlice.actions;
 
 export const isAuthenticated = (state) => state.admin.isAuthenticated;
 export const token = (state) => state.admin.token;

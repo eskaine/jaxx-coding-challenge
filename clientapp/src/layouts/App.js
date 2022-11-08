@@ -1,14 +1,13 @@
 import React from "react";
 import Container from "@mui/material/Container";
 import Navbar from '../components/Navbar';
-import { RouterProvider } from "react-router-dom";
-import { router } from "../configs/router";
+import AppRoutes from "../configs/router";
 
 const mainContainerStyle = {
   paddingTop: 5,
 };
 
-function App() {
+function App(props) {
   return (
     <div>
       <header>
@@ -16,7 +15,7 @@ function App() {
       </header>
       <main>
         <Container fixed sx={mainContainerStyle}>
-          <RouterProvider router={router} />
+          <AppRoutes />
         </Container>
       </main>
       <footer></footer>

@@ -1,9 +1,9 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
 import { Alert, Box, Button, TextField, Typography } from "@mui/material";
 import { withOnChangeHandler } from "../../components/hoc/withOnChangeHandler";
-import { adminLoginAsync } from "../../reducers/adminSlice";
+import { adminLoginAsync, login } from "../../reducers/adminSlice";
 import { isAuthenticated } from "../../reducers/adminSlice";
 import { formSectionStyle, loginFormStyle } from "./styles";
 
@@ -20,16 +20,17 @@ function Login(props) {
 
   const onSubmit = async () => {
     const res = await dispatch(adminLoginAsync(props.formState));
-
-    if (res.meta.requestStatus !== "fulfilled") {
+    
+    if (res.payload.status !== 200) {
       setShowLoginError(true);
     }
   };
 
-  return isAuth ? (
-    <Navigate to="/dashboard" />
-  ) : (
-    <div>
+  useEffect(() => {
+    dispatch(login());
+  }, [])
+
+  return (isAuth ? <Navigate to="/dashboard" />: <div>
       <Box sx={formSectionStyle}>
         <Box sx={loginFormStyle}>
           <Typography variant="h5">Login</Typography>
@@ -56,8 +57,7 @@ function Login(props) {
           )}
         </Box>
       </Box>
-    </div>
-  );
+    </div>);
 }
 
 export default withOnChangeHandler(Login, formState);

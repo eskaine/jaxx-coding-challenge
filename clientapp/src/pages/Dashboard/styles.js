@@ -4,15 +4,15 @@ export const dashboardHeaderContainerStyle = {
   paddingBottom: 2,
 };
 
-export const productsContainerStyle = {
-  display: "flex",
-  justifyContent: "space-between",
-  flexWrap: "wrap",
-  gap: 5,
-};
-
-export const mockProductCard = {
-  width: 250,
-  height: 350,
-  backgroundColor: "gray",
-};
+export const productsContainerStyle = [
+  {
+    display: "flex",
+    flexWrap: "wrap",
+    gap: 6.3,
+  },
+  (theme) => ({
+    [theme.breakpoints.down('sm')]: {
+      justifyContent: 'center',
+    },
+  })
+];

@@ -1,33 +1,19 @@
-import { createBrowserRouter, Navigate } from 'react-router-dom';
+import { Route, Routes, Navigate } from "react-router-dom"
 import AuthGuard from '../utils/authGuard';
-import Login from '../pages/Login';
-import Dashboard from '../pages/Dashboard';
-import AddProduct from '../pages/AddProduct';
+import Login from '../pages/Login/Login';
+import Dashboard from '../pages/Dashboard/Dashboard';
+import AddProduct from '../pages/AddProduct/AddProduct';
 
-export const router = createBrowserRouter([
-    {
-        path: '/',
-        children: [
-            {
-                path: '/',
-                element: <Navigate replace to="/login" />,
-            },
-            {
-                path: 'login',
-                element: <Login />,
-            },
-            {
-                path: 'dashboard',
-                element: <AuthGuard><Dashboard /></AuthGuard>,
-            },
-            {
-                path: 'add-product',
-                element: <AuthGuard><AddProduct /></AuthGuard>,
-            },
-            {
-                path: '*',
-                element: <Navigate replace to="/login" />,
-            },
-        ],
-    },
-]);
+function AppRoutes() {
+  return (
+    <Routes>
+      <Route path="/" element={<Navigate replace to="/login" />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/dashboard" element={<AuthGuard><Dashboard /></AuthGuard>} />
+      <Route path="/add-product" element={<AuthGuard><AddProduct /></AuthGuard>} />
+      <Route path="/*" element={<Navigate replace to="/login" />} />
+    </Routes>
+  );
+}
+
+export default AppRoutes;

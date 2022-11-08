@@ -11,7 +11,7 @@ const validation = [
 ];
 
 router.post("/login", validation, async (req, res, next) => {
-    const { email, password } = req.body;
+  const { email, password } = req.body;
     const errors = validationResult(req);
     
     try {
@@ -35,7 +35,7 @@ router.post("/login", validation, async (req, res, next) => {
 
         const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: "7 days" });
 
-        return res.status(200).json({ token });
+        return res.status(200).send(JSON.stringify(token));
       }
 
       return res.status(401).send("Invalid Username or Password!");

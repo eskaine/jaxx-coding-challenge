@@ -6,7 +6,7 @@ const Product = require("../models/Product");
 const ObjectId = require("mongoose").Types.ObjectId;
 
 const addProductValidation = [
-  body("sku").isAlphanumeric().isLength({ min: 6 }),
+  body("sku").isAlphanumeric().isLength({ min: 4 }),
   body("title").isAlphanumeric('en-US', {ignore: ' '}).isLength({ min: 6 }),
   body("imageUrl").isURL(),
 ];
@@ -29,7 +29,9 @@ router.post("/add", auth, addProductValidation, async (req, res, next) => {
   const errors = validationResult(req);
 
   try {
-    if (!errors.isEmpty()) {
+    const existingSku = await Product.findOne({sku: req.body.sku});
+
+    if (!errors.isEmpty() || existingSku) {
       return res.status(401).send("Invalid product information!");
     }
 

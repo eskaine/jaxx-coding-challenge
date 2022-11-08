@@ -12,10 +12,12 @@ import MenuItem from "@mui/material/MenuItem";
 import SiteLabel from "./subcomponents/SiteLabel";
 import { useSelector, useDispatch } from "react-redux";
 import { isAuthenticated, logout } from "../reducers/adminSlice";
+import { useNavigate } from "react-router-dom";
 
 const pages = ["Dashboard"];
 
 function Navbar() {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const [anchorElNav, setAnchorElNav] = useState(null);
   const isAuth = useSelector(isAuthenticated);
@@ -30,7 +32,7 @@ function Navbar() {
 
   const logoutClickHandler = () => {
     dispatch(logout());
-  }
+  };
 
   return (
     <AppBar position="static">
@@ -74,8 +76,10 @@ function Navbar() {
             >
               {isAuth &&
                 pages.map((page) => (
-                  <MenuItem key={page} onClick={handleCloseNavMenu}>
-                    <Typography textAlign="center">{page}</Typography>
+                  <MenuItem key={page} onClick={() => navigate(`/${page.toLowerCase()}`)}>
+                    {/* <Link to={`/${page}`}> */}
+                      <Typography textAlign="center">{page}</Typography>
+                    {/* </Link> */}
                   </MenuItem>
                 ))}
             </Menu>
@@ -91,18 +95,24 @@ function Navbar() {
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             {isAuth &&
               pages.map((page) => (
-                <Button
-                  key={page}
-                  onClick={handleCloseNavMenu}
-                  sx={{ my: 2, color: "white", display: "block" }}
-                >
-                  {page}
-                </Button>
+                // <Link to={`/${page}`}>
+                  <Button
+                    key={page}
+                    onClick={() => navigate(`/${page.toLowerCase()}`)}
+                    sx={{ my: 2, color: "white", display: "block" }}
+                  >
+                    {page}
+                  </Button>
+                // </Link>
               ))}
           </Box>
 
           {isAuth && (
-            <Button variant="contained" color="success" onClick={logoutClickHandler}>
+            <Button
+              variant="contained"
+              color="success"
+              onClick={logoutClickHandler}
+            >
               Logout
             </Button>
           )}
