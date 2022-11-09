@@ -11,7 +11,7 @@ const inputStyle = {
     width: 300
 }
 
-function InputField({fieldName, dataType, onChangeHandler}) {
+function InputField({fieldName, dataType, value, onChangeHandler}) {
   return (
     <Box sx={inputFieldStyle}>
       <Typography variant="h5">{`${fieldName} :`}</Typography>
@@ -20,6 +20,7 @@ function InputField({fieldName, dataType, onChangeHandler}) {
         label={fieldName}
         variant="outlined"
         sx={inputStyle}
+        value={value}
         onChange={(e) => onChangeHandler(e)}
         inputProps={{ "data-type": dataType }}
       />

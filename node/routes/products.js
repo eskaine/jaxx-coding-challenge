@@ -5,13 +5,13 @@ const auth = require("../middleware/auth");
 const Product = require("../models/Product");
 const ObjectId = require("mongoose").Types.ObjectId;
 
-const addProductValidation = [
+const productValidation = [
   body("sku").isAlphanumeric().isLength({ min: 4 }),
   body("title").isAlphanumeric('en-US', {ignore: ' '}).isLength({ min: 6 }),
   body("imageUrl").isURL(),
 ];
 
-const deleteProductValidation = [
+const productIdValidation = [
   param("id").custom((value) => ObjectId.isValid(value)),
 ];
 
@@ -25,11 +25,11 @@ router.get("/", auth, async (req, res, next) => {
   }
 });
 
-router.post("/add", auth, addProductValidation, async (req, res, next) => {
+router.post("/add", auth, productValidation, async (req, res, next) => {
   const errors = validationResult(req);
 
   try {
-    const existingSku = await Product.findOne({sku: req.body.sku});
+    const existingSku = errors.isEmpty() && await Product.findOne({sku: req.body.sku});
 
     if (!errors.isEmpty() || existingSku) {
       return res.status(401).send("Invalid product information!");
@@ -44,18 +44,40 @@ router.post("/add", auth, addProductValidation, async (req, res, next) => {
   }
 });
 
+router.put("/edit/:id", auth, [...productIdValidation, ...productValidation], async (req, res, next) => {
+  const errors = validationResult(req);
+  console.log(errors)
+  const {body, params} = req;
+  console.log({body, params})
+
+
+  try {
+    const updatedSku = errors.isEmpty() &&  await Product.findOneAndUpdate({ _id: req.params.id }, req.body, { new: true });
+
+    console.log({updatedSku})
+
+    if (!errors.isEmpty() || !updatedSku) {
+      return res.status(401).send("Invalid product information!");
+    }
+
+    return res.status(200).json({ updatedSku });
+  } catch (err) {
+    next(err);
+  }
+});
+
 router.delete(
   "/delete/:id",
   auth,
-  deleteProductValidation,
+  productIdValidation,
   async (req, res, next) => {
     const errors = validationResult(req);
 
-    try {
-      if (!errors.isEmpty()) {
-        return res.status(401).send("Invalid id!");
-      }
+    if (!errors.isEmpty()) {
+      return res.status(401).send("Invalid id!");
+    }
 
+    try {
       const result = await Product.deleteOne({ _id: req.params.id });
 
       if (result.deletedCount) {

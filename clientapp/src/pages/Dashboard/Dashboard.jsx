@@ -1,15 +1,12 @@
 import { useEffect } from "react";
-import { Box, Typography } from "@mui/material";
-import LinkButton from "../../components/LinkButton";
-import {
-  dashboardHeaderContainerStyle,
-  productsContainerStyle,
-} from "./styles";
 import { useDispatch, useSelector } from "react-redux";
+import { Box, Typography } from "@mui/material";
 import { token } from "../../reducers/adminSlice";
 import { getAllProductAsync, products } from "../../reducers/productsSlice";
-import Product from "../../components/Product";
+import LinkButton from "../../components/LinkButton";
+import ProductCard from "../../components/ProductCard";
 import { createHeaders } from '../../utils/helper';
+import { dashboardHeaderContainerStyle, productsContainerStyle } from "./styles";
 
 function Dashboard() {
   const dispatch = useDispatch();
@@ -30,7 +27,7 @@ function Dashboard() {
       <Typography variant="h5">Products</Typography>
       <Box sx={productsContainerStyle}>
         {productsList.length > 0 && productsList.map((element, i) => {
-          return <Product key={i} value={element}/>
+          return <ProductCard key={i} value={element}/>
         })}
       </Box>
     </div>

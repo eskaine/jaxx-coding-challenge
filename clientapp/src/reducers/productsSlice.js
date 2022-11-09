@@ -32,6 +32,19 @@ export const addProductAsync = createAsyncThunk(
   }
 );
 
+export const editProductAsync = createAsyncThunk(
+  "products/edit",
+  async (params) => {
+    const url = baseUrl + urlConstants.products.edit + `/${params.id}`;
+    const { data, status } = await axios.put(url, params.data, params.headers);
+
+    return {
+      data,
+      status,
+    };
+  }
+);
+
 export const deleteProductAsync = createAsyncThunk(
   "products/delete",
   async (params) => {
@@ -58,6 +71,10 @@ export const productsSlice = createSlice({
     builder
       .addCase(addProductAsync.rejected)
       .addCase(addProductAsync.fulfilled);
+
+    builder
+      .addCase(editProductAsync.rejected)
+      .addCase(editProductAsync.fulfilled);
 
     builder
       .addCase(deleteProductAsync.rejected)

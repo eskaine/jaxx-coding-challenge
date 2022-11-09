@@ -2,24 +2,25 @@ import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
 import { Alert, Box, Button, TextField, Typography } from "@mui/material";
-import { withOnChangeHandler } from "../../components/hoc/withOnChangeHandler";
+import { useForm } from "../../components/hooks/withForm";
 import { adminLoginAsync, login } from "../../reducers/adminSlice";
 import { isAuthenticated } from "../../reducers/adminSlice";
 import { formSectionStyle, loginFormStyle } from "./styles";
 
-export const formState = {
+export const loginformState = {
   email: "",
   password: "",
 };
 
-function Login(props) {
+function Login() {
   const dispatch = useDispatch();
+  const { formState, onChangeHandler } = useForm(loginformState);
   const isAuth = useSelector(isAuthenticated);
 
   const [showLoginError, setShowLoginError] = useState(false);
 
   const onSubmit = async () => {
-    const res = await dispatch(adminLoginAsync(props.formState));
+    const res = await dispatch(adminLoginAsync(formState));
     
     if (res.payload.status !== 200) {
       setShowLoginError(true);
@@ -38,14 +39,16 @@ function Login(props) {
             id="outlined-basic"
             label="Email"
             variant="outlined"
-            onChange={(e) => props.onChangeHandler(e)}
+            value={formState.email}
+            onChange={(e) => onChangeHandler(e)}
             inputProps={{ "data-type": "email" }}
           />
           <TextField
             id="outlined-basic"
             label="Password"
             variant="outlined"
-            onChange={(e) => props.onChangeHandler(e)}
+            value={formState.password}
+            onChange={(e) => onChangeHandler(e)}
             inputProps={{ "data-type": "password" }}
             type="password"
           />
@@ -60,4 +63,4 @@ function Login(props) {
     </div>);
 }
 
-export default withOnChangeHandler(Login, formState);
+export default Login;

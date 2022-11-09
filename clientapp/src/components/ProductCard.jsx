@@ -1,4 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { Card, CardActions, CardContent, CardMedia } from "@mui/material";
 import { IconButton, Typography } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
@@ -7,7 +8,8 @@ import { token } from "../reducers/adminSlice";
 import { deleteProductAsync } from "../reducers/productsSlice";
 import { createHeaders } from '../utils/helper';
 
-function Product({ value }) {
+function ProductCard({ value }) {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const authToken = useSelector(token);
   const { _id, sku, title, imageUrl } = value;
@@ -36,7 +38,7 @@ function Product({ value }) {
         </Typography>
       </CardContent>
       <CardActions>
-        <IconButton aria-label="edit">
+        <IconButton aria-label="edit" onClick={() => navigate(`/edit-product`, { state: value })}>
           <EditIcon />
         </IconButton>
         <IconButton aria-label="delete" onClick={onDelete}>
@@ -47,5 +49,5 @@ function Product({ value }) {
   );
 }
 
-export default Product;
+export default ProductCard;
 

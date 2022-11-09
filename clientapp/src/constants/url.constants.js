@@ -6,6 +6,7 @@ export const urlConstants = {
     products: {
         all: '/products',
         add: '/products/add',
+        edit: '/products/edit',
         delete: '/products/delete'
     }
 };

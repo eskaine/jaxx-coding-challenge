@@ -1,18 +1,11 @@
 import { useState } from "react";
-import AppBar from "@mui/material/AppBar";
-import Box from "@mui/material/Box";
-import Toolbar from "@mui/material/Toolbar";
-import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
-import Menu from "@mui/material/Menu";
-import MenuIcon from "@mui/icons-material/Menu";
-import Container from "@mui/material/Container";
-import Button from "@mui/material/Button";
-import MenuItem from "@mui/material/MenuItem";
-import SiteLabel from "./subcomponents/SiteLabel";
 import { useSelector, useDispatch } from "react-redux";
-import { isAuthenticated, logout } from "../reducers/adminSlice";
 import { useNavigate } from "react-router-dom";
+import { AppBar, Box, Button, Container, IconButton } from "@mui/material";
+import { Menu, MenuItem, Toolbar, Typography } from "@mui/material";
+import MenuIcon from "@mui/icons-material/Menu";
+import SiteLabel from "./subcomponents/SiteLabel";
+import { isAuthenticated, logout } from "../reducers/adminSlice";
 
 const pages = ["Dashboard"];
 
