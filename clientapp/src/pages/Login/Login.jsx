@@ -36,7 +36,7 @@ function Login({ pageLabel }) {
 
   useEffect(() => {
     dispatch(login());
-  }, []);
+  }, [dispatch]);
 
   return isAuth ? (
     <Navigate to="/dashboard" />

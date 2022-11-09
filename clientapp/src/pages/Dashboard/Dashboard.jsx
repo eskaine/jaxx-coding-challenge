@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useCallback, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Box, CircularProgress, TextField, Typography } from "@mui/material";
 import { token } from "../../reducers/adminSlice";
@@ -52,7 +52,7 @@ function Dashboard() {
     }
   };
 
-  const loadAllProducts = async () => {
+  const loadAllProducts = useCallback(async () => {
     setIsLoading(true);
     const params = createHeaders(authToken);
     const res = await dispatch(getAllProductsAsync(params));
@@ -60,11 +60,11 @@ function Dashboard() {
     if(res.payload.status === 200) {
       searchTimeout();
     }
-  }
+  }, [authToken, dispatch]);
 
   useEffect(() => {
     loadAllProducts();
-  }, []);
+  }, [loadAllProducts]);
 
   return (
     <div>

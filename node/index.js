@@ -1,11 +1,11 @@
 require('dotenv').config();
 const express = require('express');
-const limiter = require('../configs/limiter.config');
-const connectMongo = require('../configs/mongo.config');
-const adminRouter = require('../routes/admin');
-const productsRouter = require('../routes/products');
-const cors = require('../middleware/cors');
-const errorHandler = require('../middleware/error');
+const limiter = require('./configs/limiter.config');
+const connectMongo = require('./configs/mongo.config');
+const adminRouter = require('./routes/admin');
+const productsRouter = require('./routes/products');
+const cors = require('./middleware/cors');
+const errorHandler = require('./middleware/error');
 
 const port = process.env.PORT;
 

@@ -5,8 +5,7 @@ import { FirebaseProvider } from "./utils/firebaseProvider";
 import { store } from "./configs/store";
 import App from "./layouts/App";
 import "./index.css";
-import { BrowserRouter, RouterProvider } from "react-router-dom";
-import { router } from "./configs/router";
+import { BrowserRouter } from "react-router-dom";
 
 const container = document.getElementById("root");
 const root = createRoot(container);

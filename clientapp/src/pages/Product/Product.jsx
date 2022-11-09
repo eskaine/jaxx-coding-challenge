@@ -1,4 +1,4 @@
-import { useState, useContext, useEffect, useCallback } from "react";
+import { useState, useContext, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Alert, Box, Button, Typography } from "@mui/material";
@@ -65,7 +65,7 @@ function Product({ pageLabel }) {
         imageUrl: state.imageUrl
       });
     }
-  }, []);
+  }, [pageLabel, state, updateFormState]);
 
   return (
     <div>
