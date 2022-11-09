@@ -1,6 +1,6 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Box, TextField, Typography } from "@mui/material";
+import { Box, CircularProgress, TextField, Typography } from "@mui/material";
 import { token } from "../../reducers/adminSlice";
 import {
   getAllProductsAsync,
@@ -16,31 +16,54 @@ import {
   productsHeaderStyle,
   productsContainerStyle,
   searchFieldStyle,
+  loadingContainerStyle
 } from "./styles";
 
 function Dashboard() {
+  const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
   const authToken = useSelector(token);
   const productsList = useSelector(products);
 
-  const onSearchChangeHandler = ({ target }) => {
+  const searchTimeout = () => {
+    const searchInterval = setTimeout(() => {
+      setIsLoading(false);
+      clearTimeout(searchInterval);
+    }, 500);
+  }
+
+  const onSearchChangeHandler = async ({ target }) => {
     const value = target.value.trim();
-    const headers = createHeaders(authToken);
 
     if (value === "") {
-      return dispatch(getAllProductsAsync(headers));
+      loadAllProducts();
+      return;
     }
 
+    setIsLoading(true);
     const params = { 
-      headers,
+      headers: createHeaders(authToken),
       searchTerm: value
     };
-    dispatch(searchProductsAsync(params));
+    const res = await dispatch(searchProductsAsync(params));
+    
+    if(res.payload.status === 200) {
+      searchTimeout();
+    }
   };
 
-  useEffect(() => {
+  const loadAllProducts = async () => {
+    setIsLoading(true);
     const params = createHeaders(authToken);
-    dispatch(getAllProductsAsync(params));
+    const res = await dispatch(getAllProductsAsync(params));
+
+    if(res.payload.status === 200) {
+      searchTimeout();
+    }
+  }
+
+  useEffect(() => {
+    loadAllProducts();
   }, []);
 
   return (
@@ -61,11 +84,12 @@ function Dashboard() {
           <Typography sx={productsHeaderStyle} variant="h5">
             Products
           </Typography>
-          <Box sx={productsContainerStyle}>
-            {productsList.length > 0 &&
+          <Box sx={!isLoading ? productsContainerStyle : loadingContainerStyle}>
+            {!isLoading && productsList.length > 0 &&
               productsList.map((element, i) => {
                 return <ProductCard key={i} value={element} />;
               })}
+              {isLoading && <CircularProgress />}
           </Box>
         </Box>
       </Box>

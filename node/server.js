@@ -1,5 +1,6 @@
 require('dotenv').config();
 const express = require('express');
+const limiter = require('./configs/limiter.config');
 const connectMongo = require('./configs/mongo.config');
 const adminRouter = require('./routes/admin');
 const productsRouter = require('./routes/products');
@@ -14,6 +15,7 @@ connectMongo();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors);
+app.use(limiter);
 app.use('/admin', adminRouter);
 app.use('/products', productsRouter);
 app.use(errorHandler);

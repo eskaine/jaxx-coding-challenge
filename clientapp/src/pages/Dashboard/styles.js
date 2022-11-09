@@ -31,3 +31,13 @@ export const searchFieldStyle = [
     display: "flex",
   },
 ];
+
+export const loadingContainerStyle = [
+  {
+    display: "flex",
+    justifyContent: 'center',
+    marginTop: 5
+  },
+];
+
+
