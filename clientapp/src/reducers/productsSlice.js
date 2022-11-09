@@ -6,11 +6,25 @@ const initialState = {
   productsList: [],
 };
 
-export const getAllProductAsync = createAsyncThunk(
+export const getAllProductsAsync = createAsyncThunk(
   "products",
   async (headers) => {
     const url = baseUrl + urlConstants.products.all;
     const { data, status } = await axios.get(url, headers);
+
+    return {
+      data,
+      status,
+    };
+  }
+);
+
+export const searchProductsAsync = createAsyncThunk(
+  "products/search",
+  async (params) => {
+    const url =
+      baseUrl + urlConstants.products.search + `/${params.searchTerm}`;
+    const { data, status } = await axios.get(url, params.headers);
 
     return {
       data,
@@ -64,21 +78,27 @@ export const productsSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder
-      .addCase(getAllProductAsync.rejected)
-      .addCase(getAllProductAsync.fulfilled, productsSlice.caseReducers.setAllProducts);
+    builder.addCase(
+      getAllProductsAsync.fulfilled,
+      productsSlice.caseReducers.setAllProducts
+    );
 
-    builder
-      .addCase(addProductAsync.rejected)
-      .addCase(addProductAsync.fulfilled);
+    builder.addCase(
+      searchProductsAsync.fulfilled,
+      productsSlice.caseReducers.setAllProducts
+    );
 
-    builder
-      .addCase(editProductAsync.rejected)
-      .addCase(editProductAsync.fulfilled);
+    // builder
+    //   .addCase(addProductAsync.rejected)
+    //   .addCase(addProductAsync.fulfilled);
 
-    builder
-      .addCase(deleteProductAsync.rejected)
-      .addCase(deleteProductAsync.fulfilled);
+    // builder
+    //   .addCase(editProductAsync.rejected)
+    //   .addCase(editProductAsync.fulfilled);
+
+    // builder
+    //   .addCase(deleteProductAsync.rejected)
+    //   .addCase(deleteProductAsync.fulfilled);
   },
 });
 

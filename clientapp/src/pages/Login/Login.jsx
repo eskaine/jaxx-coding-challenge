@@ -22,7 +22,7 @@ function Login() {
   const onSubmit = async () => {
     const res = await dispatch(adminLoginAsync(formState));
     
-    if (res.payload.status !== 200) {
+    if (res.payload && res.payload.status !== 200) {
       setShowLoginError(true);
     }
   };
@@ -36,7 +36,7 @@ function Login() {
         <Box sx={loginFormStyle}>
           <Typography variant="h5">Login</Typography>
           <TextField
-            id="outlined-basic"
+            id="email-field"
             label="Email"
             variant="outlined"
             value={formState.email}
@@ -44,7 +44,7 @@ function Login() {
             inputProps={{ "data-type": "email" }}
           />
           <TextField
-            id="outlined-basic"
+            id="password-field"
             label="Password"
             variant="outlined"
             value={formState.password}

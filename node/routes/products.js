@@ -15,9 +15,34 @@ const productIdValidation = [
   param("id").custom((value) => ObjectId.isValid(value)),
 ];
 
+const searchValidation = [
+  param("searchTerm").isAlphanumeric(),
+];
+
 router.get("/", auth, async (req, res, next) => {
   try {
     const products = await Product.find();
+
+    return res.status(200).json({ products });
+  } catch (err) {
+    next(err);
+  }
+});
+
+router.get("/search/:searchTerm", auth, searchValidation, async (req, res, next) => {
+  try {
+    const regexAggregation = { $regex: req.params.searchTerm, $options: 'i' };
+
+    const products = await Product.aggregate([
+      {
+        $match: {
+          $or: [
+            { sku: regexAggregation },
+            { title: regexAggregation }
+          ]
+        }
+      }
+    ])
 
     return res.status(200).json({ products });
   } catch (err) {

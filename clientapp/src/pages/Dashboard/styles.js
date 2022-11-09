@@ -1,7 +1,16 @@
+export const dashboardContainerStyle = {
+  display: "flex",
+  flexDirection: "column",
+  gap: 5
+};
+
 export const dashboardHeaderContainerStyle = {
   display: "flex",
   justifyContent: "space-between",
-  paddingBottom: 2,
+};
+
+export const productsHeaderStyle = {
+  marginBottom: 2
 };
 
 export const productsContainerStyle = [
@@ -15,4 +24,10 @@ export const productsContainerStyle = [
       justifyContent: 'center',
     },
   })
+];
+
+export const searchFieldStyle = [
+  {
+    display: "flex",
+  },
 ];

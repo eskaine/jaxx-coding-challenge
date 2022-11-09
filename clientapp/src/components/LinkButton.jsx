@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 function LinkButton({navlink, name}) {
   return (
-    <Link to={navlink}>
+    <Link to={navlink} style={{ textDecoration: 'none' }}>
       <Button variant="contained">{name}</Button>
     </Link>
   );
