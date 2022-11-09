@@ -15,7 +15,7 @@ export const loginformState = {
 
 function Login({ pageLabel }) {
   const dispatch = useDispatch();
-  const { formState, onChangeHandler } = useForm(loginformState);
+  const { formState, updateFormState, onChangeHandler } = useForm(loginformState);
   const isAuth = useSelector(isAuthenticated);
 
   const [showLoginError, setShowLoginError] = useState(false);
@@ -36,6 +36,10 @@ function Login({ pageLabel }) {
 
   useEffect(() => {
     dispatch(login());
+    updateFormState({
+      email: "",
+      password: "",
+    })
   }, [dispatch]);
 
   return isAuth ? (
