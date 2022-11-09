@@ -3,16 +3,17 @@ import { useDispatch, useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
 import { Alert, Box, Button, TextField, Typography } from "@mui/material";
 import { useForm } from "../../components/hooks/withForm";
-import { adminLoginAsync, login } from "../../reducers/adminSlice";
+import { adminLoginAsync, adminRegisterAsync, login } from "../../reducers/adminSlice";
 import { isAuthenticated } from "../../reducers/adminSlice";
-import { formSectionStyle, loginFormStyle } from "./styles";
+import { formSectionStyle, loginFormStyle, registerTextStyle } from "./styles";
+import { Link } from "react-router-dom";
 
 export const loginformState = {
   email: "",
   password: "",
 };
 
-function Login() {
+function Login({ pageLabel }) {
   const dispatch = useDispatch();
   const { formState, onChangeHandler } = useForm(loginformState);
   const isAuth = useSelector(isAuthenticated);
@@ -20,8 +21,14 @@ function Login() {
   const [showLoginError, setShowLoginError] = useState(false);
 
   const onSubmit = async () => {
-    const res = await dispatch(adminLoginAsync(formState));
+    let res;
     
+    if(pageLabel === "Login") {
+      res = await dispatch(adminLoginAsync(formState));
+    } else {
+      res = await dispatch(adminRegisterAsync(formState));
+    }
+
     if (res.payload && res.payload.status !== 200) {
       setShowLoginError(true);
     }
@@ -29,12 +36,15 @@ function Login() {
 
   useEffect(() => {
     dispatch(login());
-  }, [])
+  }, []);
 
-  return (isAuth ? <Navigate to="/dashboard" />: <div>
+  return isAuth ? (
+    <Navigate to="/dashboard" />
+  ) : (
+    <div>
       <Box sx={formSectionStyle}>
         <Box sx={loginFormStyle}>
-          <Typography variant="h5">Login</Typography>
+          <Typography variant="h5">{pageLabel}</Typography>
           <TextField
             id="email-field"
             label="Email"
@@ -58,9 +68,15 @@ function Login() {
           {showLoginError && (
             <Alert severity="error">Incorrect Email or Password!</Alert>
           )}
+          {pageLabel === "Login" && (
+            <Box sx={registerTextStyle}>
+              <Link to="/register">Register</Link>
+            </Box>
+          )}
         </Box>
       </Box>
-    </div>);
+    </div>
+  );
 }
 
 export default Login;

@@ -11,3 +11,8 @@ export const loginFormStyle = {
   gap: 2,
 };
 
+export const registerTextStyle = {
+  display: "flex",
+  justifyContent: "center",
+};
+
